@@ -106,7 +106,10 @@ export default function PredictionConvergence() {
                   <div key={index} className="flex items-center justify-between">
                     <span className="text-sm text-gray-300">{candidate.name}</span>
                     <div className="flex items-center gap-2">
-                      <Progress value={candidate.odds} className="w-24 bg-gray-700" indicatorClassName="bg-market-purple" />
+                      <Progress 
+                        value={candidate.odds} 
+                        className="w-24 bg-gray-700 [&>div]:bg-market-purple" 
+                      />
                       <span className="text-sm font-medium w-12 text-right text-gray-300">{candidate.odds}%</span>
                     </div>
                   </div>
@@ -143,7 +146,10 @@ export default function PredictionConvergence() {
                   <div key={index} className="flex items-center justify-between">
                     <span className="text-sm text-gray-300">{candidate.name}</span>
                     <div className="flex items-center gap-2">
-                      <Progress value={candidate.odds} className="w-24 bg-gray-700" indicatorClassName="bg-market-blue" />
+                      <Progress 
+                        value={candidate.odds} 
+                        className="w-24 bg-gray-700 [&>div]:bg-market-blue" 
+                      />
                       <span className="text-sm font-medium w-12 text-right text-gray-300">{candidate.odds}%</span>
                     </div>
                   </div>
