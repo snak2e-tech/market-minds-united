@@ -16,7 +16,7 @@ export default function PredictionConvergence() {
       frontrunner: {
         name: "Pierre Poilievre",
         odds: 84,
-        image: "/lovable-uploads/d8065e95-b85f-4cfe-9fd4-0e2bb0f24efe.png",
+        image: "/lovable-uploads/1e4c96ba-693e-482b-8862-c0d657f8313a.png",
       },
       others: [
         { name: "Mark Carney", odds: 16 },
@@ -28,7 +28,7 @@ export default function PredictionConvergence() {
       frontrunner: {
         name: "Mark Carney",
         odds: 83,
-        image: "/lovable-uploads/b8ee0814-76f3-402c-a974-abbe1eb44cf4.png",
+        image: "/lovable-uploads/49ef2c73-7a13-4374-9fa2-701b3e97ae3e.png",
       },
       others: [
         { name: "Chrystia Freeland", odds: 11 },
@@ -38,11 +38,11 @@ export default function PredictionConvergence() {
   }
 
   const divergenceData = [
-    { date: 'Jan 20', polymarket: 82, kalshi: 15 },
-    { date: 'Jan 21', polymarket: 83, kalshi: 25 },
-    { date: 'Jan 22', polymarket: 84, kalshi: 45 },
-    { date: 'Jan 23', polymarket: 84, kalshi: 65 },
-    { date: 'Jan 24', polymarket: 84, kalshi: 83 },
+    { date: 'Jan 20', polymarket: 82, kalshi: 15, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
+    { date: 'Jan 21', polymarket: 83, kalshi: 25, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
+    { date: 'Jan 22', polymarket: 84, kalshi: 45, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
+    { date: 'Jan 23', polymarket: 84, kalshi: 65, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
+    { date: 'Jan 24', polymarket: 84, kalshi: 83, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
   ]
 
   const catalysts = [
@@ -80,9 +80,9 @@ export default function PredictionConvergence() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Navigation */}
-      <nav className="border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm fixed w-full z-10">
+      <nav className="border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm fixed w-full z-10">
         <div className="max-w-5xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <NavigationMenu>
@@ -122,14 +122,14 @@ export default function PredictionConvergence() {
           <div className="text-xl font-bold text-market-purple">Total Volume: {totalVolume}</div>
         </div>
 
-        <div className="text-gray-400 mb-8">
+        <div className="text-gray-600 dark:text-gray-400 mb-8">
           <div>As of: {marketData.asOfDate}</div>
           <div>Termination Date: {marketData.terminationDate}</div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Polymarket Card */}
-          <Card className="bg-gray-800/50 border-market-purple/20">
+          <Card className="bg-white/50 dark:bg-gray-800/50 border-market-purple/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-market-purple">Polymarket</h3>
@@ -139,28 +139,29 @@ export default function PredictionConvergence() {
               </div>
 
               <div className="flex items-center gap-4 mb-6 p-4 rounded-lg bg-market-purple/10">
-                <img
-                  src={marketData.polymarket.frontrunner.image}
-                  alt={marketData.polymarket.frontrunner.name}
-                  className="w-20 h-20 rounded-full object-cover border-2 border-market-purple"
-                />
+                <Avatar className="w-20 h-20 border-2 border-market-purple">
+                  <AvatarImage src={marketData.polymarket.frontrunner.image} alt={marketData.polymarket.frontrunner.name} />
+                  <AvatarFallback>{marketData.polymarket.frontrunner.name[0]}</AvatarFallback>
+                </Avatar>
                 <div>
-                  <div className="font-semibold text-lg text-white">{marketData.polymarket.frontrunner.name}</div>
+                  <div className="font-semibold text-lg">{marketData.polymarket.frontrunner.name}</div>
                   <div className="text-3xl font-bold text-market-purple">{marketData.polymarket.frontrunner.odds}%</div>
-                  <div className="text-sm text-gray-400">Frontrunner</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Frontrunner</div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 {marketData.polymarket.others.map((candidate, index) => (
                   <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-300">{candidate.name}</span>
                     <div className="flex items-center gap-2">
-                      <Progress 
-                        value={candidate.odds} 
-                        className="w-24 bg-gray-700 [&>div]:bg-market-purple" 
-                      />
-                      <span className="text-sm font-medium w-12 text-right text-gray-300">{candidate.odds}%</span>
+                      <Avatar className="w-8 h-8">
+                        <AvatarFallback>{candidate.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm">{candidate.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Progress value={candidate.odds} className="w-24 bg-gray-200 dark:bg-gray-700" />
+                      <span className="text-sm font-medium w-12 text-right">{candidate.odds}%</span>
                     </div>
                   </div>
                 ))}
@@ -169,7 +170,7 @@ export default function PredictionConvergence() {
           </Card>
 
           {/* Kalshi Card */}
-          <Card className="bg-gray-800/50 border-market-blue/20">
+          <Card className="bg-white/50 dark:bg-gray-800/50 border-market-blue/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-market-blue">Kalshi</h3>
@@ -179,28 +180,29 @@ export default function PredictionConvergence() {
               </div>
 
               <div className="flex items-center gap-4 mb-6 p-4 rounded-lg bg-market-blue/10">
-                <img
-                  src={marketData.kalshi.frontrunner.image}
-                  alt={marketData.kalshi.frontrunner.name}
-                  className="w-20 h-20 rounded-full object-cover border-2 border-market-blue"
-                />
+                <Avatar className="w-20 h-20 border-2 border-market-blue">
+                  <AvatarImage src={marketData.kalshi.frontrunner.image} alt={marketData.kalshi.frontrunner.name} />
+                  <AvatarFallback>{marketData.kalshi.frontrunner.name[0]}</AvatarFallback>
+                </Avatar>
                 <div>
-                  <div className="font-semibold text-lg text-white">{marketData.kalshi.frontrunner.name}</div>
+                  <div className="font-semibold text-lg">{marketData.kalshi.frontrunner.name}</div>
                   <div className="text-3xl font-bold text-market-blue">{marketData.kalshi.frontrunner.odds}%</div>
-                  <div className="text-sm text-gray-400">Frontrunner</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Frontrunner</div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 {marketData.kalshi.others.map((candidate, index) => (
                   <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-300">{candidate.name}</span>
                     <div className="flex items-center gap-2">
-                      <Progress 
-                        value={candidate.odds} 
-                        className="w-24 bg-gray-700 [&>div]:bg-market-blue" 
-                      />
-                      <span className="text-sm font-medium w-12 text-right text-gray-300">{candidate.odds}%</span>
+                      <Avatar className="w-8 h-8">
+                        <AvatarFallback>{candidate.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm">{candidate.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Progress value={candidate.odds} className="w-24 bg-gray-200 dark:bg-gray-700" />
+                      <span className="text-sm font-medium w-12 text-right">{candidate.odds}%</span>
                     </div>
                   </div>
                 ))}
@@ -209,21 +211,33 @@ export default function PredictionConvergence() {
           </Card>
         </div>
 
-        <Card className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 border-market-purple/20 mb-8">
+        <Card className="bg-white/50 dark:bg-gray-800/50 border-market-purple/20 mb-8">
           <CardContent className="p-6">
             <div className="font-bold text-xl mb-4">Market Analysis & Education</div>
             
             {/* Divergence Graph */}
-            <div className="bg-gray-900/50 p-4 rounded-lg mb-4">
-              <div className="text-market-purple font-semibold mb-2">Market Divergence Over Time</div>
-              <LineChart width={600} height={200} data={divergenceData}>
-                <XAxis dataKey="date" stroke="#666" />
-                <YAxis stroke="#666" />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="polymarket" stroke="#8B5CF6" />
-                <Line type="monotone" dataKey="kalshi" stroke="#3B82F6" />
-              </LineChart>
+            <div className="bg-white/50 dark:bg-gray-900/50 p-4 rounded-lg mb-6">
+              <div className="text-market-purple font-semibold mb-4">Market Divergence Over Time</div>
+              <div className="h-64">
+                <LineChart width={600} height={200} data={divergenceData}>
+                  <XAxis dataKey="date" stroke="#666" />
+                  <YAxis stroke="#666" />
+                  <Tooltip content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="bg-white dark:bg-gray-800 p-2 rounded shadow-lg border border-gray-200 dark:border-gray-700">
+                          <p className="text-market-purple">{`${payload[0].payload.polymarketCandidate}: ${payload[0].value}%`}</p>
+                          <p className="text-market-blue">{`${payload[0].payload.kalshiCandidate}: ${payload[1].value}%`}</p>
+                        </div>
+                      )
+                    }
+                    return null
+                  }} />
+                  <Legend />
+                  <Line type="monotone" dataKey="polymarket" stroke="#8B5CF6" name="Polymarket (Poilievre)" />
+                  <Line type="monotone" dataKey="kalshi" stroke="#3B82F6" name="Kalshi (Carney)" />
+                </LineChart>
+              </div>
             </div>
 
             {/* Educational Content */}
@@ -231,11 +245,11 @@ export default function PredictionConvergence() {
               <div className="text-market-pink font-semibold">Why Are Markets Divergent?</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {catalysts.map((catalyst, index) => (
-                  <div key={index} className="flex items-start gap-2 bg-gray-900/30 p-3 rounded-lg">
+                  <div key={index} className="flex items-start gap-2 bg-white/50 dark:bg-gray-900/50 p-3 rounded-lg">
                     <div className="w-6 h-6 rounded-full bg-market-purple/20 text-market-purple flex items-center justify-center text-sm">
                       {index + 1}
                     </div>
-                    <p className="text-sm text-gray-300">{catalyst}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{catalyst}</p>
                   </div>
                 ))}
               </div>
@@ -243,35 +257,32 @@ export default function PredictionConvergence() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-market-purple/20">
+        <Card className="bg-white/50 dark:bg-gray-800/50 border-market-purple/20">
           <CardHeader>
             <CardTitle className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-market-purple to-market-blue">
               Market Gap Predictions
             </CardTitle>
-            <p className="text-gray-400">Bet on gap between markets:</p>
+            <p className="text-gray-600 dark:text-gray-400">Bet on gap between markets:</p>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {gapScenarios.map((scenario, index) => (
-                <div key={index}>
-                  <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-lg bg-gray-800/30 hover:bg-gray-700/30 transition-colors">
-                    <div className="flex-1 w-full">
+                <div key={index} className="group">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 hover:bg-market-purple/5 dark:hover:bg-market-purple/10 transition-colors">
+                    <div className="flex-1">
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
-                        <span className="font-medium text-white">{scenario.description}</span>
-                        <div className="flex flex-col items-end">
+                        <span className="font-medium text-gray-900 dark:text-white">{scenario.description}</span>
+                        <div className="flex items-center gap-4">
                           <span className="text-2xl font-bold text-market-purple">{scenario.multiplier}</span>
-                          <span className="text-sm text-market-blue whitespace-nowrap">{scenario.payout}</span>
+                          <span className="text-market-blue whitespace-nowrap">{scenario.payout}</span>
                         </div>
                       </div>
-                      <div className="text-sm text-gray-400">Timeframe: {scenario.timeframe}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">Timeframe: {scenario.timeframe}</div>
                     </div>
-                    <Button 
-                      className="w-full sm:w-auto bg-market-purple hover:bg-market-purple/90 text-white"
-                    >
+                    <Button className="w-full sm:w-auto bg-market-purple hover:bg-market-purple/90">
                       Place Bet
                     </Button>
                   </div>
-                  {index < gapScenarios.length - 1 && <div className="border-t border-gray-700/50 my-4" />}
                 </div>
               ))}
             </div>
