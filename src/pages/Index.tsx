@@ -1,12 +1,14 @@
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink } from "@/components/ui/navigation-menu"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { LogIn, UserPlus } from "lucide-react"
+import { LogIn, UserPlus, ChevronDown, ChevronUp } from "lucide-react"
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
 
 export default function PredictionConvergence() {
+  const [showAnalysis, setShowAnalysis] = useState(false)
   const totalVolume = "2.5M USD"
 
   const marketData = {
@@ -16,10 +18,9 @@ export default function PredictionConvergence() {
       frontrunner: {
         name: "Pierre Poilievre",
         odds: 84,
-        image: "/lovable-uploads/1e4c96ba-693e-482b-8862-c0d657f8313a.png",
+        image: "/lovable-uploads/52a5f3ac-c60e-419d-9107-ecb87f3dac0e.png",
       },
       others: [
-        { name: "Mark Carney", odds: 16 },
         { name: "Chrystia Freeland", odds: 1 },
         { name: "Jagmeet Singh", odds: 1 },
       ],
@@ -28,7 +29,7 @@ export default function PredictionConvergence() {
       frontrunner: {
         name: "Mark Carney",
         odds: 83,
-        image: "/lovable-uploads/49ef2c73-7a13-4374-9fa2-701b3e97ae3e.png",
+        image: "/lovable-uploads/e95acffe-8b73-4438-9cff-e79e38eb8c25.png",
       },
       others: [
         { name: "Chrystia Freeland", odds: 11 },
@@ -38,11 +39,8 @@ export default function PredictionConvergence() {
   }
 
   const divergenceData = [
-    { date: 'Jan 20', polymarket: 82, kalshi: 15, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
-    { date: 'Jan 21', polymarket: 83, kalshi: 25, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
-    { date: 'Jan 22', polymarket: 84, kalshi: 45, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
-    { date: 'Jan 23', polymarket: 84, kalshi: 65, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
-    { date: 'Jan 24', polymarket: 84, kalshi: 83, polymarketCandidate: 'Poilievre', kalshiCandidate: 'Carney' },
+    { name: 'Polymarket', candidate: 'Poilievre', odds: 84 },
+    { name: 'Kalshi', candidate: 'Carney', odds: 83 },
   ]
 
   const catalysts = [
@@ -80,7 +78,7 @@ export default function PredictionConvergence() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Navigation */}
       <nav className="border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm fixed w-full z-10">
         <div className="max-w-5xl mx-auto px-6 py-4">
@@ -132,17 +130,21 @@ export default function PredictionConvergence() {
           <Card className="bg-white/50 dark:bg-gray-800/50 border-market-purple/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-market-purple">Polymarket</h3>
+                <div className="flex items-center gap-3">
+                  <img src="/lovable-uploads/33d24576-1ead-4dbf-9f1f-49cb6e828ca8.png" alt="Polymarket" className="h-8" />
+                  <h3 className="text-xl font-bold text-market-purple">Polymarket</h3>
+                </div>
                 <div className="px-3 py-1 rounded-full bg-market-purple/20 text-market-purple text-sm">
                   Primary Market
                 </div>
               </div>
 
               <div className="flex items-center gap-4 mb-6 p-4 rounded-lg bg-market-purple/10">
-                <Avatar className="w-20 h-20 border-2 border-market-purple">
-                  <AvatarImage src={marketData.polymarket.frontrunner.image} alt={marketData.polymarket.frontrunner.name} />
-                  <AvatarFallback>{marketData.polymarket.frontrunner.name[0]}</AvatarFallback>
-                </Avatar>
+                <img
+                  src={marketData.polymarket.frontrunner.image}
+                  alt={marketData.polymarket.frontrunner.name}
+                  className="w-20 h-20 rounded-full object-cover border-2 border-market-purple"
+                />
                 <div>
                   <div className="font-semibold text-lg">{marketData.polymarket.frontrunner.name}</div>
                   <div className="text-3xl font-bold text-market-purple">{marketData.polymarket.frontrunner.odds}%</div>
@@ -160,7 +162,7 @@ export default function PredictionConvergence() {
                       <span className="text-sm">{candidate.name}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Progress value={candidate.odds} className="w-24 bg-gray-200 dark:bg-gray-700" />
+                      <Progress value={candidate.odds} className="w-24" />
                       <span className="text-sm font-medium w-12 text-right">{candidate.odds}%</span>
                     </div>
                   </div>
@@ -173,17 +175,21 @@ export default function PredictionConvergence() {
           <Card className="bg-white/50 dark:bg-gray-800/50 border-market-blue/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-market-blue">Kalshi</h3>
+                <div className="flex items-center gap-3">
+                  <img src="/lovable-uploads/b913b11f-5f3b-40db-bc18-3358bb794d31.png" alt="Kalshi" className="h-8" />
+                  <h3 className="text-xl font-bold text-market-blue">Kalshi</h3>
+                </div>
                 <div className="px-3 py-1 rounded-full bg-market-blue/20 text-market-blue text-sm">
                   Secondary Market
                 </div>
               </div>
 
               <div className="flex items-center gap-4 mb-6 p-4 rounded-lg bg-market-blue/10">
-                <Avatar className="w-20 h-20 border-2 border-market-blue">
-                  <AvatarImage src={marketData.kalshi.frontrunner.image} alt={marketData.kalshi.frontrunner.name} />
-                  <AvatarFallback>{marketData.kalshi.frontrunner.name[0]}</AvatarFallback>
-                </Avatar>
+                <img
+                  src={marketData.kalshi.frontrunner.image}
+                  alt={marketData.kalshi.frontrunner.name}
+                  className="w-20 h-20 rounded-full object-cover border-2 border-market-blue"
+                />
                 <div>
                   <div className="font-semibold text-lg">{marketData.kalshi.frontrunner.name}</div>
                   <div className="text-3xl font-bold text-market-blue">{marketData.kalshi.frontrunner.odds}%</div>
@@ -201,7 +207,7 @@ export default function PredictionConvergence() {
                       <span className="text-sm">{candidate.name}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Progress value={candidate.odds} className="w-24 bg-gray-200 dark:bg-gray-700" />
+                      <Progress value={candidate.odds} className="w-24" />
                       <span className="text-sm font-medium w-12 text-right">{candidate.odds}%</span>
                     </div>
                   </div>
@@ -211,51 +217,49 @@ export default function PredictionConvergence() {
           </Card>
         </div>
 
-        <Card className="bg-white/50 dark:bg-gray-800/50 border-market-purple/20 mb-8">
-          <CardContent className="p-6">
-            <div className="font-bold text-xl mb-4">Market Analysis & Education</div>
-            
-            {/* Divergence Graph */}
-            <div className="bg-white/50 dark:bg-gray-900/50 p-4 rounded-lg mb-6">
-              <div className="text-market-purple font-semibold mb-4">Market Divergence Over Time</div>
-              <div className="h-64">
-                <LineChart width={600} height={200} data={divergenceData}>
-                  <XAxis dataKey="date" stroke="#666" />
-                  <YAxis stroke="#666" />
-                  <Tooltip content={({ active, payload }) => {
-                    if (active && payload && payload.length) {
-                      return (
-                        <div className="bg-white dark:bg-gray-800 p-2 rounded shadow-lg border border-gray-200 dark:border-gray-700">
-                          <p className="text-market-purple">{`${payload[0].payload.polymarketCandidate}: ${payload[0].value}%`}</p>
-                          <p className="text-market-blue">{`${payload[0].payload.kalshiCandidate}: ${payload[1].value}%`}</p>
-                        </div>
-                      )
-                    }
-                    return null
-                  }} />
-                  <Legend />
-                  <Line type="monotone" dataKey="polymarket" stroke="#8B5CF6" name="Polymarket (Poilievre)" />
-                  <Line type="monotone" dataKey="kalshi" stroke="#3B82F6" name="Kalshi (Carney)" />
-                </LineChart>
-              </div>
-            </div>
-
-            {/* Educational Content */}
-            <div className="space-y-4">
-              <div className="text-market-pink font-semibold">Why Are Markets Divergent?</div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {catalysts.map((catalyst, index) => (
-                  <div key={index} className="flex items-start gap-2 bg-white/50 dark:bg-gray-900/50 p-3 rounded-lg">
-                    <div className="w-6 h-6 rounded-full bg-market-purple/20 text-market-purple flex items-center justify-center text-sm">
-                      {index + 1}
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">{catalyst}</p>
+        <div className="mb-8">
+          <Button 
+            onClick={() => setShowAnalysis(!showAnalysis)}
+            variant="outline" 
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <span className="font-semibold">Want More Info About Market Divergence?</span>
+            {showAnalysis ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          </Button>
+          
+          {showAnalysis && (
+            <Card className="mt-4 bg-white/50 dark:bg-gray-800/50 border-market-purple/20">
+              <CardContent className="p-6">
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-4">Current Market Divergence</h3>
+                  <div className="h-64">
+                    <BarChart width={600} height={200} data={divergenceData}>
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="odds" fill="#8B5CF6" name="Odds %" />
+                    </BarChart>
                   </div>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold mb-3">Why Are Markets Divergent?</h3>
+                  <div className="grid gap-3">
+                    {catalysts.map((catalyst, index) => (
+                      <div key={index} className="flex items-start gap-3 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg">
+                        <div className="w-6 h-6 rounded-full bg-market-purple/20 text-market-purple flex items-center justify-center text-sm">
+                          {index + 1}
+                        </div>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">{catalyst}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
 
         <Card className="bg-white/50 dark:bg-gray-800/50 border-market-purple/20">
           <CardHeader>
