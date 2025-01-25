@@ -64,7 +64,7 @@ export default function PredictionConvergence() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-      <div className="max-w-7xl mx-auto p-6">
+      <div className="max-w-5xl mx-auto p-6">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-market-purple to-market-blue">
             Canadian Election 2025: Market Frontrunner Prediction
@@ -178,19 +178,23 @@ export default function PredictionConvergence() {
             <p className="text-gray-400">Bet on gap between markets:</p>
           </CardHeader>
           <CardContent>
-            <div className="space-y-6">
+            <div className="space-y-4">
               {gapScenarios.map((scenario, index) => (
-                <div key={index} className="group">
-                  <div className="flex flex-col p-4 rounded-lg hover:bg-gray-700/30 transition-colors">
-                    <div className="flex justify-between items-start mb-2">
-                      <span className="font-medium text-white flex-1">{scenario.description}</span>
-                      <div className="text-right ml-4">
-                        <span className="font-bold text-market-purple mr-4">{scenario.multiplier}</span>
-                        <span className="text-market-blue">{scenario.payout}</span>
+                <div key={index}>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-lg bg-gray-700/20 hover:bg-gray-700/30 transition-colors">
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="font-medium text-white">{scenario.description}</span>
+                        <div className="text-right ml-4 flex items-center gap-2">
+                          <span className="text-market-purple font-bold">{scenario.multiplier}</span>
+                          <span className="text-market-blue whitespace-nowrap">{scenario.payout}</span>
+                        </div>
                       </div>
+                      <div className="text-sm text-gray-400">Timeframe: {scenario.timeframe}</div>
                     </div>
-                    <div className="text-sm text-gray-400 mb-3">Timeframe: {scenario.timeframe}</div>
-                    <Button className="w-full opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-market-purple to-market-blue hover:from-market-purple/90 hover:to-market-blue/90">
+                    <Button 
+                      className="bg-gradient-to-r from-market-purple to-market-blue hover:from-market-purple/90 hover:to-market-blue/90 text-white"
+                    >
                       Place Bet
                     </Button>
                   </div>
